@@ -31,9 +31,9 @@ class AdminChangePasswordView(LoginRequiredMixin, HasAdminPermission, SuccessMes
     success_message = "پسوورد شما بروزرسانی شد"
 
 
-class AdminManagementview(LoginRequiredMixin, HasAdminPermission, ListView):
+class AdminUsersListview(LoginRequiredMixin, HasAdminPermission, ListView):
     queryset = User.objects.all()
-    template_name = "dashboard/admin/management/user-management.html"
+    template_name = "dashboard/admin/management/user-list.html"
     context_object_name = "users"
 
 
