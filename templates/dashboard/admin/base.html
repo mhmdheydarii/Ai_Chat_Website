@@ -424,9 +424,9 @@
     <div class="sb-divider"></div>
     <p class="sb-section">مدیریت</p>
     <nav class="sb-nav">
-      <a href="{% url 'dashboard:admin:management' %}" class="sb-link">
+      <a href="{% url 'dashboard:admin:users-list' %}" class="sb-link">
         <svg viewBox="0 0 24 24" width="16" height="16"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        داشبورد ادمین
+        لیست کاربران
       </a>
       <a href="#" class="sb-link">
         <svg viewBox="0 0 24 24" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -493,6 +493,13 @@
     sidebar.classList.remove('open');
     overlay.classList.remove('show');
   });
+  
+  function changePage(page_number) {
+    let current_url_params = new URLSearchParams(window.location.search)
+    current_url_params.set("page", page_number)
+    let new_url = window.location.pathname + "?" + current_url_params.toString()
+    window.location.href = new_url
+  }
 </script>
 {% block extra_js %}{% endblock %}
 </body>
