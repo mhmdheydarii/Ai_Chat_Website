@@ -10,6 +10,9 @@ urlpatterns = [
     path("change/password/", views.AdminChangePasswordView.as_view(), name="change-password"),
 
     # Management Urls
-    path("users/list", views.AdminUsersListview.as_view(), name="users-list"),
+    path("users/list/", views.AdminUsersListview.as_view(), name="users-list"),
     path("users/<int:pk>/detail/", views.AdminUsersDetailview.as_view(), name="users-detail"),
+
+    path("user/<int:pk>/activate/", views.AdminActivateUserView.as_view(), name="user-activate"),
+    path("user/<int:pk>/deactivate/", views.AdminDeactivateUserView.as_view(), name="user-deactivate"),
 ]

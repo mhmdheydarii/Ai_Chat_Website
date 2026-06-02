@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import views as auth_view
+from django.shortcuts import get_object_or_404
 from accounts.models import UserType, Profile, User
 from dashboard.permissions import HasAdminPermission
 from .forms import AdminProfileEditForm, AdminChangePasswordForm
@@ -32,12 +33,50 @@ class AdminChangePasswordView(LoginRequiredMixin, HasAdminPermission, SuccessMes
 
 
 class AdminUsersListview(LoginRequiredMixin, HasAdminPermission, ListView):
-    queryset = User.objects.all()
+    
     template_name = "dashboard/admin/management/user-list.html"
-    context_object_name = "users"
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+
+        if search_q:= self.request.GET.get("q"):
+            queryset = queryset.filter(username=search_q)
+        return queryset  
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["users"] = self.get_queryset()
+        context["status_types"] = UserType.choices
+        return context
 
 
 class AdminUsersDetailview(LoginRequiredMixin, HasAdminPermission, DetailView):
     template_name = "dashboard/admin/management/user-detail.html"
     queryset = User.objects.all()
-    context_object_name ="target_user"
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        username = self.get_object()
+        context["user"] = User.objects.get(username=username)
+        context["conversations"] = ConversationModel.objects.all().filter(user=username)
+        return context
+    
+
+class AdminActivateUserView(LoginRequiredMixin, HasAdminPermission, View):
+
+    def post(self, request, *args, **kwargs):
+        user = get_object_or_404(User, id=self.kwargs.get("pk"))
+
+        user.is_active = True
+        user.save()
+        return redirect(reverse_lazy("dashboard:admin:users-list"))
+
+class AdminDeactivateUserView(LoginRequiredMixin, HasAdminPermission, View):
+
+    def post(self, request, *args, **kwargs):
+        user = get_object_or_404(User, id=self.kwargs.get("pk"))
+
+        user.is_active = False
+        user.save()
+        return redirect(reverse_lazy("dashboard:admin:users-list"))

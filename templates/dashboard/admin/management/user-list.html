@@ -13,17 +13,15 @@
 <!-- Search & filter bar -->
 <div class="filter-bar">
   <div class="search-wrap">
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
     </svg>
-    <input
-      type="text" id="searchInput"
-      placeholder="جستجو بر اساس نام کاربری یا ایمیل..."
-      oninput="filterUsers()"
-    >
+    <input type="text" id="searchInput" name="q" placeholder="جستجو بر اساس نام کاربری..." oninput="filterUsers()">
   </div>
   <div class="filter-tabs" id="filterTabs">
-    <button class="ftab active" onclick="setFilter('all', this)">همه <span class="ftab-count">{{ users|length }}</span></button>
+    <button class="ftab active" onclick="setFilter('all', this)">همه <span class="ftab-count">{{users|length}}</span></button>
     <button class="ftab" onclick="setFilter('active', this)">فعال</button>
     <button class="ftab" onclick="setFilter('inactive', this)">غیرفعال</button>
     <button class="ftab" onclick="setFilter('admin', this)">ادمین</button>
@@ -47,12 +45,8 @@
       </thead>
       <tbody>
         {% for user in users %}
-        <tr
-          class="user-row"
-          data-username="{{ user.username|lower }}"
-          data-email="{{ user.email|lower }}"
-          data-status="{% if user.type.admin %}admin{% elif user.type.superuser %}superuser{% elif user.is_active %}active{% else %}inactive{% endif %}"
-        >
+        <tr class="user-row" data-username="{{ user.username|lower }}" data-email="{{ user.email|lower }}"
+          data-status="{% if user.is_superuser %}admin{% elif user.is_active %}active{% else %}inactive{% endif %}">
           <td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--text3);">{{ user.id }}</td>
 
           <!-- User -->
@@ -62,14 +56,14 @@
               <div>
                 <div style="font-size:0.875rem;font-weight:600;">{{ user.username }}</div>
                 {% if user.get_fullname %}
-                  <div style="font-size:0.72rem;color:var(--text3);">{{ user.get_fullname }}</div>
+                <div style="font-size:0.72rem;color:var(--text3);">{{ user.get_fullname }}</div>
                 {% endif %}
               </div>
             </div>
           </td>
 
           <!-- Email -->
-          <td style="font-size:0.82rem;color:var(--text2);direction:ltr;text-align:left;">
+          <td style="font-size:0.82rem;color:var(--text2);direction:ltr;text-align:right;">
             {{ user.email|default:"—" }}
           </td>
 
@@ -88,11 +82,11 @@
           <!-- Status -->
           <td>
             {% if user.is_superuser %}
-              <span class="badge admin">★ ادمین</span>
+            <span class="badge admin">★ ادمین</span>
             {% elif user.is_active %}
-              <span class="badge active">● فعال</span>
+            <span class="badge active">● فعال</span>
             {% else %}
-              <span class="badge inactive">● غیرفعال</span>
+            <span class="badge inactive">● غیرفعال</span>
             {% endif %}
           </td>
 
@@ -100,29 +94,42 @@
           <td>
             <div style="display:flex;align-items:center;gap:8px;">
               <!-- View detail -->
-              <a href="{% url 'dashboard:admin:users-detail' pk=user.pk %}" class="action-btn view" title="مشاهده جزئیات">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              <a href="{% url 'dashboard:admin:users-detail' pk=user.pk %}" class="action-btn view"
+                title="مشاهده جزئیات">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
                 </svg>
               </a>
 
               <!-- Toggle active — not for superusers -->
               {% if not user.is_superuser %}
-              <form method="post" action="#" style="display:inline;">
-                {% csrf_token %}
-                <button
-                  type="submit"
-                  class="action-btn {% if u.is_active %}deactivate{% else %}activate{% endif %}"
-                  title="{% if u.is_active %}غیرفعال کردن{% else %}فعال کردن{% endif %}"
-                >
+              
                   {% if user.is_active %}
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
-                    </svg>
+                  <form method="post" action="{% url 'dashboard:admin:user-deactivate' pk=user.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="action-btn {% if user.is_active %}deactivate{% endif %}"
+                      title="{% if user.is_active %}غیرفعال کردن{% endif %}">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                      </svg>
+                    </button>
+                  </form>
                   {% else %}
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
+                  <form method="post" action="{% url 'dashboard:admin:user-activate' pk=user.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="action-btn {% if not user.is_active %}activate{% endif %}"
+                      title="{% if not user.is_active %}فعال کردن{% endif %}">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                    </button>
+                  </form>
                   {% endif %}
                 </button>
               </form>
@@ -134,8 +141,10 @@
         <tr>
           <td colspan="7">
             <div class="empty-state">
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
               </svg>
               هیچ کاربری یافت نشد
             </div>
@@ -145,12 +154,15 @@
       </tbody>
     </table>
   </div>
+</nav>
 </div>
 
 <!-- No results message (shown by JS) -->
 <div id="noResults" style="display:none;" class="empty-state" style="padding:40px;">
-  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"
+    stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
   نتیجه‌ای برای جستجوی شما یافت نشد
 </div>
@@ -161,99 +173,341 @@
 <style>
   /* Filter bar */
   .filter-bar {
-    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
     animation: fadeUp 0.4s var(--ease) 0.05s both;
   }
 
   .search-wrap {
-    flex: 1; min-width: 200px;
-    display: flex; align-items: center; gap: 10px;
-    background: var(--bg2); border: 1px solid var(--border2);
-    border-radius: var(--radius-xs); padding: 9px 14px;
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-xs);
+    padding: 9px 14px;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
+
   .search-wrap:focus-within {
-    border-color: rgba(110,231,183,0.4);
+    border-color: rgba(110, 231, 183, 0.4);
     box-shadow: 0 0 0 3px var(--accent-glow);
   }
-  .search-wrap svg { stroke: var(--text3); flex-shrink: 0; }
-  .search-wrap input {
-    flex: 1; background: none; border: none; outline: none;
-    color: var(--text); font-family: 'Vazirmatn', sans-serif; font-size: 0.875rem;
-  }
-  .search-wrap input::placeholder { color: var(--text3); }
 
-  .filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .search-wrap svg {
+    stroke: var(--text3);
+    flex-shrink: 0;
+  }
+
+  .search-wrap input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 0.875rem;
+  }
+
+  .search-wrap input::placeholder {
+    color: var(--text3);
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
 
   .ftab {
-    padding: 7px 14px; border-radius: var(--radius-xs);
-    background: var(--bg2); border: 1px solid var(--border);
-    color: var(--text2); font-family: 'Vazirmatn', sans-serif;
-    font-size: 0.8rem; cursor: pointer;
-    transition: all 0.18s; display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-xs);
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
-  .ftab:hover { border-color: var(--border2); color: var(--text); }
-  .ftab.active { background: var(--accent-dim); border-color: rgba(110,231,183,0.3); color: var(--accent); }
+
+  .ftab:hover {
+    border-color: var(--border2);
+    color: var(--text);
+  }
+
+  .ftab.active {
+    background: var(--accent-dim);
+    border-color: rgba(110, 231, 183, 0.3);
+    color: var(--accent);
+  }
 
   .ftab-count {
-    background: var(--bg4); color: var(--text3);
-    font-size: 0.68rem; padding: 1px 6px; border-radius: 99px;
+    background: var(--bg4);
+    color: var(--text3);
+    font-size: 0.68rem;
+    padding: 1px 6px;
+    border-radius: 99px;
     font-family: 'JetBrains Mono', monospace;
   }
 
   /* Table */
   .admin-table {
-    width: 100%; border-collapse: collapse; font-size: 0.875rem;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
   }
-  .admin-table thead tr { border-bottom: 1px solid var(--border); }
+
+  .admin-table thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
   .admin-table th {
-    padding: 12px 16px; text-align: right;
-    font-size: 0.7rem; font-weight: 600;
-    color: var(--text3); letter-spacing: 0.07em; text-transform: uppercase;
-    white-space: nowrap; background: var(--bg3);
+    padding: 12px 16px;
+    text-align: right;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text3);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--bg3);
   }
+
   .admin-table td {
-    padding: 14px 16px; border-bottom: 1px solid var(--border);
-    color: var(--text); vertical-align: middle;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
   }
-  .admin-table tbody tr { transition: background 0.15s; }
-  .admin-table tbody tr:hover { background: var(--bg3); }
-  .admin-table tbody tr:last-child td { border-bottom: none; }
-  .admin-table tbody tr.hidden { display: none; }
+
+  .admin-table tbody tr {
+    transition: background 0.15s;
+  }
+
+  .admin-table tbody tr:hover {
+    background: var(--bg3);
+  }
+
+  .admin-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .admin-table tbody tr.hidden {
+    display: none;
+  }
 
   /* User avatar */
   .u-avatar {
-    width: 34px; height: 34px; border-radius: 50%;
-    background: var(--accent-dim); border: 1px solid rgba(110,231,183,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.82rem; font-weight: 700; color: var(--accent); flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    border: 1px solid rgba(110, 231, 183, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
   }
 
   /* Action buttons */
   .action-btn {
-    width: 30px; height: 30px; border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; border: 1px solid; transition: all 0.18s;
-    background: none; text-decoration: none; flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid;
+    transition: all 0.18s;
+    background: none;
+    text-decoration: none;
+    flex-shrink: 0;
   }
-  .action-btn.view { border-color: var(--border2); color: var(--text2); }
-  .action-btn.view:hover { background: var(--bg4); color: var(--text); border-color: var(--border2); }
-  .action-btn.deactivate { border-color: rgba(248,113,113,0.25); color: var(--danger); }
-  .action-btn.deactivate:hover { background: var(--danger-dim); }
-  .action-btn.activate { border-color: rgba(110,231,183,0.25); color: var(--accent); }
-  .action-btn.activate:hover { background: var(--accent-dim); }
+
+  .action-btn.view {
+    border-color: var(--border2);
+    color: var(--text2);
+  }
+
+  .action-btn.view:hover {
+    background: var(--bg4);
+    color: var(--text);
+    border-color: var(--border2);
+  }
+
+  .action-btn.deactivate {
+    border-color: rgba(248, 113, 113, 0.25);
+    color: var(--danger);
+  }
+
+  .action-btn.deactivate:hover {
+    background: var(--danger-dim);
+  }
+
+  .action-btn.activate {
+    border-color: rgba(110, 231, 183, 0.25);
+    color: var(--accent);
+  }
+
+  .action-btn.activate:hover {
+    background: var(--accent-dim);
+  }
 
   /* Empty state */
   .empty-state {
-    display: flex; flex-direction: column; align-items: center;
-    gap: 10px; padding: 40px; color: var(--text3);
-    font-size: 0.85rem; text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 40px;
+    color: var(--text3);
+    font-size: 0.85rem;
+    text-align: center;
   }
 
   @media (max-width: 700px) {
-    .admin-table th, .admin-table td { padding: 10px 10px; }
-    .filter-bar { flex-direction: column; align-items: stretch; }
-    .search-wrap { min-width: unset; }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 10px 10px;
+    }
+
+    .filter-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .search-wrap {
+      min-width: unset;
+    }
+  }
+
+  .pagination-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* Result info text — "نمایش ۱ تا ۱۰ از ۴۸ کاربر" */
+  .pagination-info {
+    font-size: 0.78rem;
+    color: var(--text3);
+    white-space: nowrap;
+  }
+
+  .pagination-info strong {
+    color: var(--text2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Buttons row */
+  .pagination {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Every page button shares this base */
+  .pg-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.18s, border-color 0.18s, color 0.18s;
+    text-decoration: none;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .pg-btn:hover:not(.active):not(.disabled) {
+    background: var(--bg4);
+    border-color: var(--border2);
+    color: var(--text);
+  }
+
+  /* Active / current page */
+  .pg-btn.active {
+    background: var(--accent-dim);
+    border-color: rgba(110, 231, 183, 0.35);
+    color: var(--accent);
+    font-weight: 700;
+    cursor: default;
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  /* Disabled prev / next */
+  .pg-btn.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Ellipsis "..." between page numbers */
+  .pg-ellipsis {
+    min-width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text3);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+
+  /* Prev / Next arrow icons */
+  .pg-btn svg {
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* Mobile — hide page numbers, keep prev/next */
+  @media (max-width: 480px) {
+    .pg-btn.pg-number {
+      display: none;
+    }
+
+    .pg-ellipsis {
+      display: none;
+    }
+
+    .pagination-wrap {
+      justify-content: center;
+    }
+
+    .pagination-info {
+      width: 100%;
+      text-align: center;
+    }
   }
 </style>
 {% endblock %}
@@ -263,14 +517,14 @@
   let currentFilter = 'all';
 
   function filterUsers() {
-    const query  = document.getElementById('searchInput').value.toLowerCase().trim();
-    const rows   = document.querySelectorAll('.user-row');
-    let visible  = 0;
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('.user-row');
+    let visible = 0;
 
     rows.forEach(row => {
       const username = row.dataset.username || '';
-      const email    = row.dataset.email    || '';
-      const status   = row.dataset.status   || '';
+      const email = row.dataset.email || '';
+      const status = row.dataset.status || '';
 
       const matchSearch = !query || username.includes(query) || email.includes(query);
       const matchFilter = currentFilter === 'all' || status === currentFilter;
