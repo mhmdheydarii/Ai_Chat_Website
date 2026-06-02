@@ -59,6 +59,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+    
+    def get_status(self):
+        return {
+            "id":self.status,
+            "title":UserType(self.status).name,
+            "lable":UserType(self.status).label,
+        }
 
 
 class Profile(models.Model):
