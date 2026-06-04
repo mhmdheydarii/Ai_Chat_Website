@@ -16,6 +16,13 @@
 <div class="stats-row">
   <div class="stat-card">
     <div class="stat-icon">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <div class="stat-value">{{ user.conversation.count }}</div>
+    <div class="stat-label">گفتگوها</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">
       <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
     </div>
     <div class="stat-value">{{ user.created_date|date:"Y" }}</div>

@@ -3,11 +3,27 @@ from django.contrib.auth import forms as auth_form
 from accounts.models import Profile
 
 class UserProfileWeditForm(forms.ModelForm):
+    
+    username = forms.CharField()
 
     class Meta:
         model = Profile
-        fields = ["first_name", "last_name"]
+        fields = ["first_name", "last_name", "username"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].initial = self.instance.user.username
+
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+
+        profile.user.username = self.cleaned_data["username"]
+
+        if commit:
+            profile.user.save()
+            profile.save()
+        return profile
 
 class UserChangePasswordForm(auth_form.PasswordChangeForm):
 

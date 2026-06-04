@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import FormView
 from django.contrib import messages
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, authenticate
 from django.contrib.auth import views as auth_view
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -17,6 +17,12 @@ class RegisteView(FormView):
 
     def form_valid(self, form):
         user = form.save()
+
+        user = authenticate(
+            self.request,
+            username = form.cleaned_data["username"],
+            password = form.cleaned_data["password1"]
+        )
         login(self.request, user)
         messages.success(self.request, "اکانت با موفقیت ایجاد شد")
         return super().form_valid(form)
