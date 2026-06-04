@@ -1,5 +1,6 @@
 {% extends 'accounts/base.html' %}
 {% load static %}
+{% load socialaccount %} 
 
 {% block content %}
 <!-- Heading -->
@@ -129,10 +130,13 @@
     <div class="divider">یا</div>
 
     <div class="login-link">
+        ثبت نام با حساب گوگل ؟
+        <a href="{% provider_login_url 'google' %}">ثبت نام</a>
+    </div>
+    <div class="login-link">
         قبلاً ثبت‌ نام کرده‌اید؟
         <a href="{% url 'accounts:login' %}">وارد شوید</a>
     </div>
-
 </form>
 </div>
 {% endblock %}
