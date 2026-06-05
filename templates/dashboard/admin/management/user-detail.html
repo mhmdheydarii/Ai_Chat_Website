@@ -142,6 +142,7 @@
           <th>عنوان</th>
           <th>تاریخ ایجاد</th>
           <th>آخرین فعالیت</th>
+          <th>مشاهده</th>
         </tr>
       </thead>
       <tbody>
@@ -158,6 +159,16 @@
           </td>
           <td style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text3);white-space:nowrap;">
             {{ conv.updated_at|date:"Y/m/d H:i" }}
+          </td>
+          <td>
+            <a href="{% url 'dashboard:admin:conversation-detail' pk=conv.id %}" class="action-btn view"
+                title="مشاهده جزئیات">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </a>
           </td>
         </tr>
         {% endfor %}
