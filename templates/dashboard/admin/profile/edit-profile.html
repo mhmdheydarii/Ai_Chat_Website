@@ -55,6 +55,23 @@
         {% endfor %}
       </div>
 
+      <!-- Username -->
+      <div class="field">
+        <label for="id_username">
+          <svg viewBox="0 0 24 24" width="13" height="13"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          نام کاربری
+        </label>
+        <input
+          type="text" name="username"
+          value="{{ form.username.value|default:'' }}"
+          placeholder="نام کاربری خود را وارد کنید"
+          class="{% if form.username.errors %}has-error{% endif %}"
+        >
+        {% for error in form.username.errors %}
+          <span class="field-error">{{ error }}</span>
+        {% endfor %}
+      </div>
+
       <!-- Email -->
       <div class="field full">
         <label>
@@ -63,16 +80,6 @@
           <span style="font-size:0.7rem;color:var(--text3);font-weight:400;margin-right:4px;">(غیرقابل تغییر)</span>
         </label>
         <input type="email" value="{{ user.email }}" disabled>
-      </div>
-
-      <!-- Username — read only -->
-      <div class="field full">
-        <label>
-          <svg viewBox="0 0 24 24" width="13" height="13"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          نام کاربری
-          <span style="font-size:0.7rem;color:var(--text3);font-weight:400;margin-right:4px;">(غیرقابل تغییر)</span>
-        </label>
-        <input type="text" value="{{ user.username }}" disabled>
       </div>
 
     </div>
