@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import View, TemplateView, UpdateView, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from accounts.models import UserType, Profile, User
 from dashboard.permissions import HasAdminPermission
 from .forms import AdminProfileEditForm, AdminChangePasswordForm
-from chat.models import ConversationModel
+from chat.models import ConversationModel, MessageModel
 # Create your views here.
 
 class AdminProfileview(LoginRequiredMixin, HasAdminPermission, TemplateView):
@@ -72,6 +72,7 @@ class AdminActivateUserView(LoginRequiredMixin, HasAdminPermission, View):
         user.save()
         return redirect(reverse_lazy("dashboard:admin:users-list"))
 
+
 class AdminDeactivateUserView(LoginRequiredMixin, HasAdminPermission, View):
 
     def post(self, request, *args, **kwargs):
@@ -80,3 +81,15 @@ class AdminDeactivateUserView(LoginRequiredMixin, HasAdminPermission, View):
         user.is_active = False
         user.save()
         return redirect(reverse_lazy("dashboard:admin:users-list"))
+    
+
+class AdminConversationDetailView(LoginRequiredMixin, HasAdminPermission, View):
+
+    def get(self, request, user_pk, conv_pk):
+        
+        user = get_object_or_404(User, pk=user_pk)
+        conversation = get_object_or_404(ConversationModel, pk=conv_pk, user__id=user_pk)
+
+        return render(request, 'dashboard/admin/management/conversation-detail.html',
+                        {"conversation":conversation, "user":user})
+

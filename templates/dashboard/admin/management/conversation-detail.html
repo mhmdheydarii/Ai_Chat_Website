@@ -1,0 +1,287 @@
+{% extends 'dashboard/admin/base.html' %}
+{% block title %}جزئیات گفتگو{% endblock %}
+
+{% block content %}
+
+<!-- Page header -->
+<div class="page-header">
+  <div>
+    <h1 class="page-title">جزئیات گفتگو</h1>
+    <p class="page-sub">مشاهده کامل پیام‌های این گفتگو — فقط خواندنی</p>
+  </div>
+  <a href="{% url 'dashboard:admin:users-detail' pk=user.pk %}" class="btn-ghost">
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+    </svg>
+    بازگشت به لیست
+  </a>
+</div>
+
+<!-- Meta bar -->
+<div class="meta-bar">
+
+  <div class="meta-left">
+    <div class="meta-icon">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </div>
+    <div>
+      <p class="meta-title">{{conversation.title}}</p>
+      <p class="meta-date">{{conversation.created_at|date:"Y/m/d"}}</p>
+    </div>
+  </div>
+
+  <div class="meta-right">
+    <!-- User chip -->
+    <div class="user-chip">
+      <div class="chip-av">{{conversation.user.username|first|upper}}</div>
+      <div>
+        <p class="chip-name">{{conversation.user.username}}</p>
+        <p class="chip-email">{{conversation.user.email}}</p>
+      </div>
+    </div>
+    <!-- Stats -->
+    <span class="stat-pill">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+      </svg>
+      {{conversation.message.count}}
+    </span>
+  </div>
+
+</div>
+
+<!-- Chat thread -->
+<div class="chat-thread">
+
+  <!-- Thread header -->
+  <div class="thread-header">
+    <div class="thread-header-right">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      فقط خواندنی
+    </div>
+    <div class="thread-legend">
+      <span class="legend-item user-legend">
+        <span class="legend-dot"></span>
+        {{conversation.user.username}}
+      </span>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages-list">
+    {% for message in conversation.message.all %}
+
+    {% if message.role == "user" %}
+    <!-- USER -->
+    <div class="msg-row user">
+      <div class="msg-content">
+        <div class="bubble user-bubble">
+          {{message.content}}
+        </div>
+        <div class="msg-meta">
+          <span class="msg-time">{{message.created_at|date:"m/d H:i"}}</span>
+          <span class="msg-role user-role">{{message.conversation.user.username}}</span>
+        </div>
+      </div>
+      <div class="msg-avatar user-av">{{message.conversation.user.username|first|upper}}</div>
+    </div>
+    {% elif message.role == "assistant" %}
+    <!-- AI -->
+    <div class="msg-row ai">
+      <div class="msg-avatar ai-av">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="msg-content">
+        <div class="bubble ai-bubble">
+          {{message.content}}
+        </div>
+        <div class="msg-meta">
+          <span class="msg-role ai-role">Aria AI</span>
+          <span class="msg-time">{{message.created_at|date:"m/d H:i"}}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  <!-- end messages-list -->
+
+</div>
+<!-- end chat-thread -->
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+
+  /* ── Meta bar ── */
+  .meta-bar {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    animation: fadeUp 0.4s var(--ease) 0.05s both;
+  }
+
+  .meta-left  { display: flex; align-items: center; gap: 14px; }
+  .meta-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .meta-icon {
+    width: 42px; height: 42px; border-radius: 11px;
+    background: var(--accent-dim); border: 1px solid rgba(110,231,183,0.2);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .meta-icon svg { stroke: var(--accent); }
+
+  .meta-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; }
+  .meta-date  { font-size: 0.72rem; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+
+  .user-chip {
+    display: flex; align-items: center; gap: 9px;
+    padding: 7px 13px; background: var(--bg3);
+    border: 1px solid var(--border); border-radius: 99px;
+  }
+  .chip-av {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent-dim); border: 1px solid rgba(110,231,183,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 700; color: var(--accent); flex-shrink: 0;
+  }
+  .chip-name  { font-size: 0.8rem; font-weight: 600; line-height: 1.2; }
+  .chip-email { font-size: 0.68rem; color: var(--text3); direction: ltr; }
+
+  .stat-pill {
+    display: flex; align-items: center; gap: 5px;
+    padding: 5px 11px; border-radius: 99px;
+    background: var(--bg3); border: 1px solid var(--border);
+    font-size: 0.72rem; color: var(--text2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .stat-pill svg { stroke: var(--text3); flex-shrink: 0; }
+
+  /* ── Chat thread ── */
+  .chat-thread {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    animation: fadeUp 0.4s var(--ease) 0.1s both;
+  }
+
+  /* Thread header */
+  .thread-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 20px;
+    background: var(--bg3); border-bottom: 1px solid var(--border);
+  }
+
+  .thread-header-right {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 0.72rem; color: var(--text3);
+  }
+  .thread-header-right svg { stroke: var(--text3); }
+
+  .thread-legend { display: flex; align-items: center; gap: 14px; }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; color: var(--text3);
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .user-legend .legend-dot { background: rgba(110,231,183,0.5); }
+  .ai-legend   .legend-dot { background: var(--accent); }
+
+  /* Messages list */
+  .messages-list {
+    padding: 28px 24px;
+    display: flex; flex-direction: column; gap: 22px;
+    max-height: 65vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg4) transparent;
+  }
+  .messages-list::-webkit-scrollbar { width: 4px; }
+  .messages-list::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+  /* Message rows */
+  .msg-row { display: flex; align-items: flex-start; gap: 12px; }
+  .msg-row.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 34px; height: 34px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+  }
+  .user-av { background: var(--bg4); border: 1px solid var(--border2); color: var(--text2); }
+  .ai-av   { background: var(--accent-dim); border: 1px solid rgba(110,231,183,0.2); color: var(--accent); }
+  .ai-av svg { stroke: var(--accent); }
+
+  .msg-content { display: flex; flex-direction: column; gap: 6px; max-width: 66%; }
+  .msg-row.user .msg-content { align-items: flex-end; }
+  .msg-row.ai  .msg-content { align-items: flex-start; }
+
+  /* Bubbles */
+  .bubble {
+    padding: 12px 16px; border-radius: 16px;
+    font-size: 0.9rem; line-height: 1.8;
+    word-break: break-word; white-space: pre-wrap;
+  }
+
+  .user-bubble {
+    background: #1a2820;
+    border: 1px solid rgba(110,231,183,0.2);
+    border-top-left-radius: 4px;
+    color: var(--text); text-align: right;
+  }
+
+  .ai-bubble {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-top-right-radius: 4px;
+    color: var(--text); text-align: right;
+  }
+
+  /* Code blocks */
+  .bubble pre {
+    background: rgba(0,0,0,0.45); border: 1px solid var(--border);
+    border-radius: 9px; padding: 14px; margin-top: 12px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; line-height: 1.65; color: #a8d8a8;
+    direction: ltr; text-align: left;
+    scrollbar-width: thin; scrollbar-color: var(--bg5) transparent;
+  }
+  .bubble pre::-webkit-scrollbar { height: 3px; }
+  .bubble pre::-webkit-scrollbar-thumb { background: var(--bg5); border-radius: 2px; }
+
+  .bubble code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+    background: rgba(0,0,0,0.3); padding: 1px 6px; border-radius: 4px; color: var(--accent);
+  }
+
+  /* Message meta */
+  .msg-meta { display: flex; align-items: center; gap: 8px; }
+  .msg-time { font-size: 0.68rem; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+  .msg-role { font-size: 0.66rem; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
+  .user-role { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); }
+  .ai-role   { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(110,231,183,0.2); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .meta-bar    { flex-direction: column; align-items: flex-start; }
+    .msg-content { max-width: 84%; }
+    .messages-list { padding: 18px 14px; max-height: 70vh; }
+  }
+
+  @media (max-width: 480px) {
+    .meta-right  { flex-direction: column; align-items: flex-start; }
+    .msg-content { max-width: 90%; }
+  }
+
+</style>
+{% endblock %}

@@ -140,6 +140,7 @@
         <tr>
           <th>#</th>
           <th>عنوان</th>
+          <th>پیام ها</th>
           <th>تاریخ ایجاد</th>
           <th>آخرین فعالیت</th>
           <th>مشاهده</th>
@@ -154,6 +155,11 @@
               {{ conv.title }}
             </span>
           </td>
+          <td>
+            <span style="display:block;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              {{ conv.message.count }}
+            </span>
+          </td>
           <td style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text3);white-space:nowrap;">
             {{ conv.created_at|date:"Y/m/d H:i" }}
           </td>
@@ -161,7 +167,7 @@
             {{ conv.updated_at|date:"Y/m/d H:i" }}
           </td>
           <td>
-            <a href="{% url 'dashboard:admin:conversation-detail' pk=conv.id %}" class="action-btn view"
+            <a href="{% url 'dashboard:admin:conversation-detail' user_pk=user.id conv_pk=conv.id %}" class="action-btn view"
                 title="مشاهده جزئیات">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
