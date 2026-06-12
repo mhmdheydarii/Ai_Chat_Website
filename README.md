@@ -23,7 +23,7 @@ git clone https://github.com/mhmdheydarii/Ai_Chat_Website.git
 <h3>2. Navigate to the project directory</h3>
 
 ```bash
-cd Chat-Bot-Website
+cd Ai_Chat_Website
 ```
 
 <br>
