@@ -96,17 +96,16 @@ class ChatbotView(LoginRequiredMixin, View):
             'title':           conversation.title,
         })
 
-        conversation.save()
 
     def _get_ai_reply(self ,history):
         client = OpenAI(
-            base_url='https://api.avalai.ir/v1', 
+            base_url='https://api.gapgpt.app/v1', 
             api_key=settings.API_KEY, 
             timeout=10.0
             )
         
         response = client.chat.completions.create(
-            model="gpt-5-chat",
+            model="gpt-4o",
             messages=history,
             max_tokens=1024
         )
