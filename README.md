@@ -74,7 +74,15 @@ pip install -r requirements.txt
 
 <br>
 
-<h3>6. Run the project</h3>
+<h3>6. Configure environment variables</h3>
+
+<p>Create a .env file in the project root and add the required environment variables.</p>
+
+```bash
+SECRET_KEY=your-secret-key
+OPENAI_API_KEY=your-openai-api-key
+```
+<h3>7. Run the project</h3>
 
 
 ```bash
