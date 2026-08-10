@@ -1,6 +1,6 @@
 <section style="max-width:700px; margin:auto; font-family:Arial, sans-serif; line-height:1.7; color:#333;">
-  <h1 style="text-align:center; color:#2c3e50;">Django Ai Chat</h1>
-  <p>A web-based AI Chat application built with Python, Django, and OpenAI API.</p>
+  <h1 style="text-align:center; color:#2c3e50;">Django Ai Chat <p>A web-based AI Chat application built with Python, Django, and OpenAI API.</p></h1>
+  
 
   <p align="center">
   <img src="./docs/chat.png" width="700"/>
