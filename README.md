@@ -81,6 +81,13 @@ pip install -r requirements.txt
 ```bash
 SECRET_KEY=your-secret-key
 OPENAI_API_KEY=your-openai-api-key
+
+DB
+NAME=db-name
+USER=db-user
+PASSWORD-db-password
+HOST=db-hose
+PORT=db-port
 ```
 <h3>7. Run the project</h3>
 
