@@ -11,6 +11,20 @@
 <p><p>A web-based AI Chat application built with Python, Django, and OpenAI API.</p></p>
 
 
+<h2>Features</h2>
+. Session Authentication
+. Role-Based Permissions
+. Admin Dashboard
+. Chat History
+
+<h2>Technologies</h2>
+. Python
+. Django
+. Postgres
+. Open API
+. Html, Css, Js
+
+
 <h2>⚙️ Installation (Windows)</h2>
 
 <p>Follow these steps to set up and run the project locally.</p>
