@@ -12,19 +12,19 @@
 
 
 <h2>Features</h2>
-```bash
+
 <p>. Session Authentication</p>
 <p>. Role-Based Permissions<p/>
 <p>. Admin Dashboard</p>
 <p>. Chat History</p> 
-```
+
 
 <h2>Technologies</h2>
-. Python
-. Django
-. Postgres
-. Open API
-. Html, Css, Js
+<p>. Python</p>
+<p>. Django</p>
+<p>. Postgres</p>
+<p>. Open API </p>
+<p>. Html, Css, Js</p>
 
 
 <h2>⚙️ Installation (Windows)</h2>
