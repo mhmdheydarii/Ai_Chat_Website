@@ -12,10 +12,12 @@
 
 
 <h2>Features</h2>
-. Session Authentication
-. Role-Based Permissions
-. Admin Dashboard
-. Chat History
+```bash
+<p>. Session Authentication</p>
+<p>. Role-Based Permissions<p/>
+<p>. Admin Dashboard</p>
+<p>. Chat History</p> 
+```
 
 <h2>Technologies</h2>
 . Python
