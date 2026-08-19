@@ -14,20 +14,20 @@ Users can chat with AI, view their chat history, and delete previous conversatio
 
 <h2>Features</h2>
 <ul>
-  <li>. Session Authentication</li>
-  <li>. Role-Based Permissions</li>
-  <li>. Admin Dashboard</li>
-  <li>. Chat History</li>
+  <li> Session Authentication</li>
+  <li> Role-Based Permissions</li>
+  <li> Admin Dashboard</li>
+  <li> Chat History</li>
 </ul>
 
 
 <h2>Technologies</h2>
 <ul>
-  <li>. Python</li>
-  <li>. Django</li>
-  <li>. Postgres</li>
-  <li>. OpenAI API</li>
-  <li>. HTML, CSS, JavaScript</li>
+  <li> Python</li>
+  <li> Django</li>
+  <li> Postgres</li>
+  <li> OpenAI API</li>
+  <li> HTML, CSS, JavaScript</li>
 </ul>
 
 
