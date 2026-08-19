@@ -110,6 +110,10 @@ USER=db-user
 PASSWORD-db-password
 HOST=db-hose
 PORT=db-port
+
+SMTP
+EMAIL_USER=your email address
+EMAIL_PASSWORD=your email password
 ```
 <h3>7. Run the project</h3>
 
