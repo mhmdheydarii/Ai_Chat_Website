@@ -1,10 +1,32 @@
 <section style="max-width:700px; margin:auto; font-family:Arial, sans-serif; line-height:1.7; color:#333;">
   <h1 style="text-align:center; color:#2c3e50;">Django Ai Chat</h1>
+  
 
   <p align="center">
   <img src="./docs/chat.png" width="700"/>
   </p>
 </section>
+
+<h2>About</h2>
+<p>A web-based AI chat application built with Python, Django, and the OpenAI API.
+Users can chat with AI, view their chat history, and delete previous conversations.</p>
+
+
+<h2>Features</h2>
+
+<p>. Session Authentication</p>
+<p>. Role-Based Permissions<p/>
+<p>. Admin Dashboard</p>
+<p>. Chat History</p> 
+
+
+<h2>Technologies</h2>
+<p>. Python</p>
+<p>. Django</p>
+<p>. Postgres</p>
+<p>. OpenAI API </p>
+<p>. HTML, CSS, JavaScript</p>
+
 
 <h2>⚙️ Installation (Windows)</h2>
 
@@ -23,7 +45,7 @@ git clone https://github.com/mhmdheydarii/Ai_Chat_Website.git
 <h3>2. Navigate to the project directory</h3>
 
 ```bash
-cd Chat-Bot-Website
+cd Ai_Chat_Website
 ```
 
 <br>
@@ -74,7 +96,22 @@ pip install -r requirements.txt
 
 <br>
 
-<h3>6. Run the project</h3>
+<h3>6. Configure environment variables</h3>
+
+<p>Create a .env file in the project root and add the required environment variables.</p>
+
+```bash
+SECRET_KEY=your-secret-key
+OPENAI_API_KEY=your-openai-api-key
+
+DB
+NAME=db-name
+USER=db-user
+PASSWORD-db-password
+HOST=db-hose
+PORT=db-port
+```
+<h3>7. Run the project</h3>
 
 
 ```bash
