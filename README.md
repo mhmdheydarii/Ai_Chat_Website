@@ -118,6 +118,7 @@ SMTP
 EMAIL_USER=your email address
 EMAIL_PASSWORD=your email password
 ```
+</br>
 <h3>7. Run the project</h3>
 
 
