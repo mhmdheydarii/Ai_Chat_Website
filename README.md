@@ -23,8 +23,8 @@
 <p>. Python</p>
 <p>. Django</p>
 <p>. Postgres</p>
-<p>. Open API </p>
-<p>. Html, Css, Js</p>
+<p>. OpenAI API </p>
+<p>. HTML, CSS, JavaScript</p>
 
 
 <h2>⚙️ Installation (Windows)</h2>
