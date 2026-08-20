@@ -16,6 +16,7 @@ Users can chat with AI, view their chat history, and delete previous conversatio
 <ul>
   <li> Session Authentication</li>
   <li> Role-Based Permissions</li>
+  <li> Password Reset with OTP</li>
   <li> Admin Dashboard</li>
   <li> Chat History</li>
 </ul>
@@ -25,7 +26,8 @@ Users can chat with AI, view their chat history, and delete previous conversatio
 <ul>
   <li> Python</li>
   <li> Django</li>
-  <li> Postgres</li>
+  <li> PostgreSQL</li>
+  <li> Google OAuth</li>
   <li> OpenAI API</li>
   <li> HTML, CSS, JavaScript</li>
 </ul>
