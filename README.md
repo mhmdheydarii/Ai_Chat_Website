@@ -108,6 +108,7 @@ pip install -r requirements.txt
 ```bash
 SECRET_KEY=your-secret-key
 OPENAI_API_KEY=your-openai-api-key
+DEBUG=True
 
 DB
 NAME=db-name
