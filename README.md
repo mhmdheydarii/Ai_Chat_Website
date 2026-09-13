@@ -8,7 +8,7 @@
 </section>
 
 <h2>About</h2>
-<p>A web-based AI chat application built with Python, Django, and the OpenAI API.
+<p>An AI chat website built with Python, Django, and the OpenAI API.
 Users can chat with AI, view their chat history, and delete previous conversations.</p>
 
 
