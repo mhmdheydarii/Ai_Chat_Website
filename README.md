@@ -110,14 +110,12 @@ SECRET_KEY=your-secret-key
 OPENAI_API_KEY=your-openai-api-key
 DEBUG=True
 
-DB
 NAME=db-name
 USER=db-user
 PASSWORD-db-password
 HOST=db-hose
 PORT=db-port
 
-SMTP
 EMAIL_USER=your email address
 EMAIL_PASSWORD=your email password
 ```
